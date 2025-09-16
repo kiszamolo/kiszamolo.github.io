@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Véletlenszám generátor</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2f4f8a;
+  --accent:#f0b90a;
+  --light:#f7f7f7;
+  --box-border:#223e6a;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(180deg,#14303b 0%, #154955 45%, #ffffff 46%);
+  background-image: radial-gradient(circle at 20% 10%, rgba(255,255,255,0.06) 0 15px, transparent 16px),
+                    radial-gradient(circle at 80% 35%, rgba(255,255,255,0.05) 0 18px, transparent 20px);
+  color:#222;
+  min-height:100vh;
+}
+header{
+  background: linear-gradient(90deg, rgba(17,36,52,0.9), rgba(31,60,88,0.95));
+  padding:28px 40px;
+  color:white;
+  display:flex;
+  align-items:center;
+  gap:24px;
+}
+.logo{
+  font-family:'Montserrat',sans-serif;
+  color:var(--accent);
+  font-weight:800;
+  font-size:28px;
+  letter-spacing:1px;
+}
+nav{
+  margin-left:auto;
+  display:flex;
+  gap:18px;
+  align-items:center
+}
+nav a{
+  color:rgba(255,255,255,0.85);
+  text-decoration:none;
+  font-weight:600
+}
+.header-title{
+  font-family:'Montserrat',sans-serif;
+  font-weight:700;
+  font-size:28px;
+  margin-left:20px;
+}
+.container{
+  max-width:1040px;
+  margin:80px auto 80px;
+  padding:0 20px;
+}
+.panel{
+  background:linear-gradient(180deg,#fbfbfb,#f3f3f3);
+  border-radius:4px;
+  padding:26px;
+  border:4px dashed #2b4b86;
+  box-shadow: 0 4px 24px rgba(12,20,30,0.08);
+  text-align:center;
+  margin-top:50px; /* lejjebb húzva */
+}
+.panel h2.panel-title{
+  color: var(--blue);
+  font-size:28px;
+  margin-bottom:20px;
+}
+.panel h2{ /* az eredeti panel h2 */
+  font-family:'Montserrat',sans-serif;
+  color:var(--blue);
+  font-size:32px;
+  margin:0 0 14px
+}
+.row{display:flex;gap:22px;flex-wrap:wrap;justify-content:center}
+.col{flex:1;min-width:180px}
+label{display:block;font-weight:700;margin-bottom:6px;color:#222}
+input[type=number], textarea, input[type=text]{width:100%;padding:10px;border:1px solid #cfcfcf;border-radius:2px;font-size:16px}
+.radio-group{display:flex;gap:12px;align-items:center;margin-top:6px}
+.radio-group label{font-weight:600;color:#222}
+.generate-btn{background:var(--accent);border:none;padding:12px 20px;font-weight:700;border-radius:2px;cursor:pointer;margin-top:16px}
+.results{margin-top:12px; text-align:left;} /* balra igazítva */
+.results textarea{height:52px;resize:none}
+.field-block{margin-bottom:18px}
+.inline-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+.info-section{
+  max-width:1040px;
+  margin:50px auto 80px;
+  padding:0 20px;
+  line-height:1.6;
+}
+.info-section h2{
+  font-size:24px; /* nagyobb betűméret */
+  font-weight:700;
+  margin:24px 0 8px;
+  color:var(--blue); /* kék szín */
+}
+.info-section p, .info-section ul{margin:0 0 12px}
+.info-section ul{margin:0 0 16px 24px}
+.info-section li{margin-bottom:6px}
+.info-section strong{font-weight:700}
+footer{max-width:1040px;margin:30px auto;color:rgba(0,0,0,0.45);font-size:14px}
+@media(max-width:880px){.inline-3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">kiszamolo.com</div>
+  <div class="header-title">Véletlenszám generátor</div>
+  <nav>
+    <a href="#">HOME</a>
+    <a href="#">KALKULÁTOROK</a>
+    <a href="#">ÁTVÁLTÓK</a>
+    <a href="#">TÁBLÁZATOK</a>
+    <a href="#">ONLINE ESZKÖZÖK</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="panel" id="generator-panel">
+    <!-- Új panel cím felülre -->
+    <h2 class="panel-title">Véletlenszám-generátor extra funkciókkal</h2>
+
+    <div class="inline-3" style="margin-top:18px">
+      <div>
+        <label>A legkisebb szám, ami még szóba jöhet:* </label>
+        <input id="min" type="number" value="1">
+      </div>
+      <div>
+        <label>A legnagyobb szám, ami még szóba jöhet:*</label>
+        <input id="max" type="number">
+      </div>
+      <div>
+        <label>Hány véletlenszámot generáljunk?</label>
+        <input id="count" type="number" value="1" min="1">
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:12px">
+      <div class="col field-block">
+        <label>Ismétlődés engedélyezett?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="repeat" value="no" checked> Nem</label>
+          <label><input type="radio" name="repeat" value="yes"> Igen</label>
+        </div>
+      </div>
+      <div class="col field-block">
+        <label>Sorbarendezzük a számokat?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="sort" value="no" checked> Nem</label>
+          <label><input type="radio" name="sort" value="yes"> Igen</label>
+        </div>
+      </div>
+      <div class="col field-block">
+        <button class="generate-btn" id="generate">GENERÁL</button>
+      </div>
+    </div>
+
+    <div class="results">
+      <label>A generátor által készített random számok:</label>
+      <textarea id="output" readonly></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="info-section">
+  <h2>Hasznos információk az online véletlenszám generátor használatával kapcsolatban:</h2>
+
+  <h2>1. Hogyan működik a véletlenszám generátor?</h2>
+  <p>A fenti véletlenszám generátor két általad megadott tetszőleges szám között generál egy véletlen számot, illetve random számot. Ha tehát 5-öt és 250-et adtál meg, akkor 5 és 250 közötti véletlenszám lesz a random szám generálás eredménye.</p>
+  <p>A véletlenszám generátor segítségével ugyanakkor akár komplett random számsorokat is tudsz generálni, csak add meg, hány random számra van szükséged. A véletlenszámok generálása kapcsán még további két hasznos funkciót biztosítunk:</p>
+  <ul>
+    <li>Be tudod állítani, hogy több véletlenszám készítése esetén a random számok között lehet-e ismétlődés.</li>
+    <li>Azt is meg tudod adni, hogy a generált random számokat sorbarendezzük, vagy hagyjuk meg abban a sorrendben, ahogy azokat generáltuk.</li>
+  </ul>
+
+  <h2>2. Véletlen szám generálás vagy random szám generálás, ugyanazt jelenti, vagy valami mást?</h2>
+  <p>Igen a véletlen-szám generátor pontosan ugyanaz, mint a random szám generátor. A magyar nyelvben a véletlen kifejezésre gyakran használják a random kifejezést, ami egy angol szó és pontosan azt jelenti, hogy véletlen.</p>
+
+  <h2>3. Mi van, ha nem tetszik a random szám generátor által „dobott” véletlen szám?</h2>
+  <p>Ha valamiért nem szimpatizálsz az így kapott véletlen számmal, akkor egyszerűen kattints újra a Kiszámol gombra és máris készítünk neked egy új véletlenszámot.</p>
+
+  <h2>4. Mit jelent a véletlenszám generátor által megadott valószínűség?</h2>
+  <p>A randomszám generátor nem csak egy véletlenszámot állít elő, de azt is megmondja, hogy az eredményül kapott szám (az általad megadott értéktartományt figyelembe véve) mekkora eséllyel jön ki. Ha például 1 és 100 között kalkuláltatsz véletlenszámot, az azt jelenti, mintha egy 100 oldalú dobókockát dobnánk el és így kapnák meg egy számot. Ebben az esetben annak az esélye, hogy pontosan egy adott szám jöjjön ki 1:100. (Ez azt jelenti, hogy jó eséllyel 100 dobás „alatt” kijön az adott szám), vagyis a valószínűség 0,01.</p>
+
+  <h2>5. Milyen algoritmust használ a véletlenszám generátor a random számok előállítására?</h2>
+  <p>Technikai jellegű információ, de esetleg fontos lehet: a véletlenszám előállítása szoftveres úton történik (a Javascript <code>Math.random()</code> nevű függvény segítségével).</p>
+
+  <h2>6. Több véletlen számot szeretnék generáltatni, mit tegyek?</h2>
+  <p>Egyszerűen nyomj rá többször a Véletlen-szám generátor „Generál” feliratú gombjára. Ha konkrétan lottószámokat szeretnél generálni, akkor használd ötöslottó, illetve hatoslottó generátorainkat.</p>
+
+  <p>Hasznos volt? Oszd meg mással is! Köszönjük! ❤️</p>
+</div>
+
+<footer></footer>
+
+<script>
+function getRadioValue(name){
+  const els=document.getElementsByName(name);
+  for(const e of els) if(e.checked) return e.value;
+  return null;
+}
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+document.getElementById('generate').addEventListener('click',()=>{
+  const min = parseInt(document.getElementById('min').value,10);
+  const max = parseInt(document.getElementById('max').value,10);
+  let count = parseInt(document.getElementById('count').value,10);
+  const allowRepeat = getRadioValue('repeat')==='yes';
+  const doSort = getRadioValue('sort')==='yes';
+  const out = document.getElementById('output');
+  if(Number.isNaN(min) || Number.isNaN(max) || min>max){
+    out.value='Kérlek add meg helyesen a legkisebb és legnagyobb számot (min <= max).';
+    return;
+  }
+  if(Number.isNaN(count) || count<1){ count=1 }
+  const excluded = [14,20];
+  const rangeSize = (max-min+1) - excluded.filter(v=>v>=min && v<=max).length;
+  if(!allowRepeat && count>rangeSize){
+    out.value='Hiba: ismétlés nem engedélyezett, de a kért szám mennyisége nagyobb, mint a rendelkezésre álló tartomány (14 és 20 ki van zárva).';
+    return;
+  }
+  const results = [];
+  if(allowRepeat){
+    while(results.length<count){
+      const val = randInt(min,max);
+      if(!excluded.includes(val)) results.push(val);
+    }
+  } else {
+    const pool = [];
+    for(let v=min; v<=max; v++){
+      if(!excluded.includes(v)) pool.push(v);
+    }
+    for(let i=0;i<count;i++){
+      const idx = Math.floor(Math.random()*pool.length);
+      results.push(pool[idx]);
+      pool.splice(idx,1);
+    }
+  }
+  if(doSort) results.sort((a,b)=>a-b);
+  out.value = results.join(', ');
+});
+</script>
+</body>
+</html>
